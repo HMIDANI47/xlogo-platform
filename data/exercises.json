@@ -1,0 +1,57 @@
+[
+  {
+    "id": "seed-2ac-carre",
+    "title": "Carré simple",
+    "level": "2AC",
+    "description": "Dessine un carré de côté 100 avec une boucle REPETE.",
+    "hint": "Un carré possède 4 côtés égaux et 4 angles droits. Utilise REPETE 4 [...].",
+    "solution": "REPETE 4 [AVANCE 100 DROITE 90]",
+    "createdBy": "system",
+    "assignedTo": { "type": "all" },
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "seed-2ac-rectangle",
+    "title": "Rectangle",
+    "level": "2AC",
+    "description": "Dessine un rectangle de longueur 120 et largeur 70.",
+    "hint": "Un rectangle alterne deux longueurs et deux largeurs.",
+    "solution": "REPETE 2 [AVANCE 120 DROITE 90 AVANCE 70 DROITE 90]",
+    "createdBy": "system",
+    "assignedTo": { "type": "all" },
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "seed-2ac-hexagone",
+    "title": "Hexagone coloré",
+    "level": "2AC",
+    "description": "Dessine un hexagone régulier en bleu avec des côtés de 60.",
+    "hint": "Pour un hexagone, l’angle extérieur est 60 degrés.",
+    "solution": "COULEURCRAYON bleu\nREPETE 6 [AVANCE 60 DROITE 60]",
+    "createdBy": "system",
+    "assignedTo": { "type": "all" },
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "seed-3ac-rosace",
+    "title": "Rosace",
+    "level": "3AC",
+    "description": "Dessine une rosace composée de 12 carrés tournés autour du centre.",
+    "hint": "Répète 12 fois un carré, puis tourne de 30 degrés.",
+    "solution": "COULEURCRAYON violet\nREPETE 12 [REPETE 4 [AVANCE 70 DROITE 90] DROITE 30]",
+    "createdBy": "system",
+    "assignedTo": { "type": "all" },
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "seed-3ac-flocon",
+    "title": "Flocon simple",
+    "level": "3AC",
+    "description": "Dessine un flocon simple avec 6 branches identiques.",
+    "hint": "Une branche peut avancer puis revenir, ensuite tourne de 60 degrés.",
+    "solution": "COULEURCRAYON cyan\nREPETE 6 [AVANCE 90 RECULE 90 DROITE 60]",
+    "createdBy": "system",
+    "assignedTo": { "type": "all" },
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  }
+]
