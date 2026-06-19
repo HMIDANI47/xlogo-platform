@@ -1,0 +1,31 @@
+{
+  "name": "xlogo",
+  "version": "1.0.0",
+  "description": "Plateforme éducative XLOGO pour 2AC et 3AC avec espace élève, espace enseignant et Gemini API.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "keywords": [
+    "xlogo",
+    "education",
+    "node",
+    "express",
+    "gemini"
+  ],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: xlogo
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: GEMINI_MODEL
+        value: gemini-3.5-flash
+      - key: TEACHER_NAME
+        value: Enseignant
+      - key: TEACHER_PASSWORD
+        sync: false
+      - key: TEACHER_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CORS_ORIGIN
+        value: "*"
