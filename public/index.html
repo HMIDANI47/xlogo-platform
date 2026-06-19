@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XLOGO</title>
+  <meta name="description" content="Plateforme éducative XLOGO pour 2ème AC et 3ème AC.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="mesh"></div>
+  <div id="toast" class="toast-zone"></div>
+
+  <header class="topbar">
+    <button class="brand" id="homeBtn" type="button" aria-label="Accueil">
+      <span class="brand-icon"><i class="fa-solid fa-draw-polygon"></i></span>
+      <span>
+        <strong>XLOGO</strong>
+        <small>2AC / 3AC</small>
+      </span>
+    </button>
+    <nav class="main-nav" aria-label="Menu principal">
+      <button data-go="home" class="nav-link active">Accueil</button>
+      <button data-go="student" class="nav-link">Élève</button>
+      <button data-go="teacher" class="nav-link">Enseignant</button>
+      <button data-go="progress" class="nav-link">Progression</button>
+    </nav>
+    <div class="top-actions">
+      <span id="studentBadge" class="session-badge hidden"></span>
+      <button id="themeToggle" class="icon-btn" type="button" title="Mode sombre / clair"><i class="fa-solid fa-moon"></i></button>
+      <button id="logoutBtn" class="ghost danger hidden" type="button"><i class="fa-solid fa-right-from-bracket"></i> Sortir</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section id="view-home" class="view active">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><i class="fa-solid fa-circle-check"></i> Plateforme moderne avec Gemini API côté backend</p>
+          <h1>Apprendre XLOGO avec la tortue, le code et la correction intelligente.</h1>
+          <p class="lead">Une plateforme complète pour les élèves de 2ème AC et 3ème AC : éditeur XLOGO, canvas, progression, badges, exercices IA et tableau de bord enseignant.</p>
+          <div class="hero-actions">
+            <button class="primary" data-go="student"><i class="fa-solid fa-user-graduate"></i> Entrer comme élève</button>
+            <button class="secondary" data-go="teacher"><i class="fa-solid fa-chalkboard-user"></i> Entrer comme enseignant</button>
+          </div>
+          <div class="feature-row">
+            <article><i class="fa-solid fa-code"></i><strong>Éditeur</strong><span>Commandes XLOGO validées</span></article>
+            <article><i class="fa-solid fa-robot"></i><strong>Gemini</strong><span>Indice, exercice, correction</span></article>
+            <article><i class="fa-solid fa-chart-line"></i><strong>Suivi</strong><span>Scores, badges, historique</span></article>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="mini-window">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <pre>COULEURCRAYON bleu
+REPETE 4 [
+  AVANCE 90
+  DROITE 90
+]</pre>
+          </div>
+          <canvas id="homeCanvas" width="480" height="300" aria-label="Aperçu XLOGO"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-student" class="view">
+      <div id="studentLogin" class="auth-card wide">
+        <div>
+          <p class="eyebrow"><i class="fa-solid fa-user-graduate"></i> Espace élève</p>
+          <h2>Connexion élève</h2>
+          <p class="muted">Entre ton nom, ta classe et ton niveau. Seuls les niveaux 2AC et 3AC sont disponibles.</p>
+        </div>
+        <form id="studentForm" class="form-grid">
+          <label>Nom complet<input id="studentName" required maxlength="70" placeholder="Ex : Sara Amrani"></label>
+          <label>Classe<input id="studentClass" required maxlength="40" placeholder="Ex : 2AC-1"></label>
+          <label>Niveau
+            <select id="studentLevel" required>
+              <option value="2AC">2ème AC</option>
+              <option value="3AC">3ème AC</option>
+            </select>
+          </label>
+          <button class="primary" type="submit"><i class="fa-solid fa-play"></i> Commencer</button>
+        </form>
+      </div>
+
+      <div id="studentWorkspace" class="workspace hidden">
+        <div class="workspace-head">
+          <div>
+            <p class="eyebrow"><i class="fa-solid fa-pencil"></i> Atelier XLOGO</p>
+            <h2 id="exerciseTitle">Exercice</h2>
+            <p id="exerciseDescription" class="muted"></p>
+          </div>
+          <div class="score-cards compact">
+            <div><strong id="scoreAverage">0</strong><span>Moyenne</span></div>
+            <div><strong id="scoreCount">0</strong><span>Exercices</span></div>
+            <div><strong id="badgeCount">0</strong><span>Badges</span></div>
+          </div>
+        </div>
+
+        <div class="learning-grid">
+          <aside class="panel lesson-panel">
+            <div class="panel-title"><i class="fa-solid fa-list-check"></i> Consigne</div>
+            <div class="level-line"><span id="currentLevelPill" class="pill">2AC</span><span id="exerciseSource" class="tiny"></span></div>
+            <p id="hintBox" class="hint hidden"></p>
+            <div class="button-grid">
+              <button id="newExerciseBtn" class="secondary"><i class="fa-solid fa-wand-magic-sparkles"></i> Nouvel exercice IA</button>
+              <button id="hintBtn" class="ghost"><i class="fa-solid fa-lightbulb"></i> Indice</button>
+              <button id="solutionBtn" class="ghost warning"><i class="fa-solid fa-eye"></i> Solution</button>
+              <button id="copySolutionBtn" class="ghost"><i class="fa-solid fa-copy"></i> Copier solution</button>
+            </div>
+            <hr>
+            <h3>Commandes rapides</h3>
+            <div id="commandChips" class="chip-zone"></div>
+            <h3>Exemples</h3>
+            <div id="quickExamples" class="examples"></div>
+          </aside>
+
+          <section class="panel code-panel">
+            <div class="panel-title split"><span><i class="fa-solid fa-terminal"></i> Éditeur</span><span id="autosaveState" class="tiny">Sauvegarde auto prête</span></div>
+            <textarea id="codeEditor" spellcheck="false" placeholder="Écris ton code ici..."></textarea>
+            <div class="toolbar">
+              <button id="runBtn" class="primary"><i class="fa-solid fa-play"></i> Exécuter</button>
+              <button id="evaluateBtn" class="secondary"><i class="fa-solid fa-robot"></i> Correction IA</button>
+              <button id="resetCanvasBtn" class="ghost"><i class="fa-solid fa-rotate-left"></i> Réinitialiser canvas</button>
+              <button id="exportPngBtn" class="ghost"><i class="fa-solid fa-download"></i> Export PNG</button>
+            </div>
+            <div class="canvas-box">
+              <canvas id="turtleCanvas" width="620" height="420"></canvas>
+            </div>
+            <div class="console" id="consoleLog"></div>
+          </section>
+        </div>
+
+        <div id="feedback" class="feedback hidden"></div>
+      </div>
+    </section>
+
+    <section id="view-progress" class="view">
+      <div class="workspace-head">
+        <div>
+          <p class="eyebrow"><i class="fa-solid fa-chart-simple"></i> Progression personnelle</p>
+          <h2 id="progressTitle">Aucun élève connecté</h2>
+          <p id="progressSubtitle" class="muted">Connecte-toi comme élève pour afficher ton historique.</p>
+        </div>
+      </div>
+      <div class="score-cards" id="progressStats"></div>
+      <div class="two-cols">
+        <section class="panel">
+          <div class="panel-title"><i class="fa-solid fa-award"></i> Badges</div>
+          <div id="badges" class="badges"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-title"><i class="fa-solid fa-clock-rotate-left"></i> Historique</div>
+          <div id="historyList" class="history"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="view-teacher" class="view">
+      <div id="teacherLogin" class="auth-card">
+        <p class="eyebrow"><i class="fa-solid fa-chalkboard-user"></i> Espace enseignant</p>
+        <h2>Connexion enseignant</h2>
+        <p class="muted">Le mot de passe est configuré dans <code>.env</code> avec <code>TEACHER_PASSWORD</code>.</p>
+        <form id="teacherForm" class="stack">
+          <label>Mot de passe<input id="teacherPassword" type="password" required placeholder="Mot de passe enseignant"></label>
+          <button class="primary" type="submit"><i class="fa-solid fa-lock-open"></i> Connexion</button>
+        </form>
+      </div>
+
+      <div id="teacherDashboard" class="teacher-layout hidden">
+        <div class="workspace-head">
+          <div>
+            <p class="eyebrow"><i class="fa-solid fa-gauge-high"></i> Dashboard enseignant</p>
+            <h2>Suivi XLOGO</h2>
+            <p class="muted">Classes, élèves, exercices, corrections et export CSV.</p>
+          </div>
+          <div class="teacher-actions">
+            <button id="refreshTeacherBtn" class="secondary"><i class="fa-solid fa-arrows-rotate"></i> Actualiser</button>
+            <a class="ghost" id="csvLink" href="/api/export/csv"><i class="fa-solid fa-file-csv"></i> CSV</a>
+          </div>
+        </div>
+
+        <div class="score-cards" id="teacherStats"></div>
+
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="students">Élèves</button>
+          <button class="tab" data-tab="classes">Classes</button>
+          <button class="tab" data-tab="exercises">Exercices</button>
+          <button class="tab" data-tab="submissions">Réponses</button>
+          <button class="tab" data-tab="stats">Statistiques</button>
+        </div>
+
+        <section id="tab-students" class="tab-pane active">
+          <div class="panel">
+            <div class="panel-title split"><span><i class="fa-solid fa-users"></i> Liste des élèves</span><button id="addStudentBtn" class="secondary small">Ajouter</button></div>
+            <form id="studentCreateForm" class="inline-form hidden">
+              <input id="newStudentName" placeholder="Nom élève">
+              <input id="newStudentClass" placeholder="Classe">
+              <select id="newStudentLevel"><option>2AC</option><option>3AC</option></select>
+              <button class="primary small" type="submit">Enregistrer</button>
+            </form>
+            <div class="filters">
+              <input id="filterClass" placeholder="Filtrer classe">
+              <select id="filterLevel"><option value="">Tous niveaux</option><option>2AC</option><option>3AC</option></select>
+              <input id="filterMinScore" type="number" min="0" max="10" placeholder="Score min">
+              <input id="filterMaxScore" type="number" min="0" max="10" placeholder="Score max">
+              <button id="applyStudentFilters" class="ghost small">Filtrer</button>
+            </div>
+            <div class="table-wrap"><table id="studentsTable"></table></div>
+          </div>
+        </section>
+
+        <section id="tab-classes" class="tab-pane">
+          <div class="panel">
+            <div class="panel-title"><i class="fa-solid fa-school"></i> Créer une classe</div>
+            <form id="classForm" class="inline-form">
+              <input id="className" required placeholder="Ex : 2AC-1">
+              <select id="classLevel"><option>2AC</option><option>3AC</option></select>
+              <button class="primary small" type="submit">Créer</button>
+            </form>
+            <div class="table-wrap"><table id="classesTable"></table></div>
+          </div>
+        </section>
+
+        <section id="tab-exercises" class="tab-pane">
+          <div class="panel">
+            <div class="panel-title"><i class="fa-solid fa-square-plus"></i> Créer / affecter un exercice</div>
+            <form id="exerciseForm" class="stack">
+              <div class="form-row">
+                <label>Titre<input id="exerciseFormTitle" required></label>
+                <label>Niveau<select id="exerciseFormLevel"><option>2AC</option><option>3AC</option></select></label>
+              </div>
+              <label>Description<textarea id="exerciseFormDescription" required rows="3"></textarea></label>
+              <label>Indice<textarea id="exerciseFormHint" rows="2"></textarea></label>
+              <label>Solution<textarea id="exerciseFormSolution" required rows="4"></textarea></label>
+              <div class="form-row">
+                <label>Affecter à
+                  <select id="assignType"><option value="all">Tous les élèves</option><option value="class">Une classe</option><option value="student">Un seul élève</option></select>
+                </label>
+                <label>Valeur affectation<input id="assignValue" placeholder="Classe ou ID élève"></label>
+              </div>
+              <div class="toolbar left">
+                <button class="primary" type="submit">Créer exercice</button>
+                <button id="generateTeacherExercise" class="secondary" type="button"><i class="fa-solid fa-robot"></i> Générer avec IA</button>
+              </div>
+            </form>
+            <div class="table-wrap"><table id="exercisesTable"></table></div>
+          </div>
+        </section>
+
+        <section id="tab-submissions" class="tab-pane">
+          <div class="panel">
+            <div class="panel-title"><i class="fa-solid fa-inbox"></i> Réponses des élèves</div>
+            <div class="filters">
+              <input id="submissionClass" placeholder="Classe">
+              <select id="submissionLevel"><option value="">Tous niveaux</option><option>2AC</option><option>3AC</option></select>
+              <input id="submissionDate" type="date">
+              <input id="submissionMin" type="number" min="0" max="10" placeholder="Score min">
+              <input id="submissionMax" type="number" min="0" max="10" placeholder="Score max">
+              <button id="applySubmissionFilters" class="ghost small">Filtrer</button>
+            </div>
+            <div id="submissionsList" class="submission-list"></div>
+          </div>
+        </section>
+
+        <section id="tab-stats" class="tab-pane">
+          <div class="two-cols">
+            <section class="panel"><div class="panel-title"><i class="fa-solid fa-trophy"></i> Meilleurs élèves</div><div id="bestStudents" class="rank-list"></div></section>
+            <section class="panel"><div class="panel-title"><i class="fa-solid fa-triangle-exclamation"></i> Élèves en difficulté</div><div id="weakStudents" class="rank-list"></div></section>
+          </div>
+          <section class="panel"><div class="panel-title"><i class="fa-solid fa-chart-column"></i> Statistiques par classe</div><div class="table-wrap"><table id="classStatsTable"></table></div></section>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="solutionDialog" class="modal">
+    <form method="dialog">
+      <div class="modal-head"><h3><i class="fa-solid fa-lightbulb"></i> Solution</h3><button class="icon-btn">×</button></div>
+      <pre id="solutionContent"></pre>
+    </form>
+  </dialog>
+
+  <dialog id="manualCorrectionDialog" class="modal">
+    <form id="manualCorrectionForm">
+      <div class="modal-head"><h3><i class="fa-solid fa-pen-to-square"></i> Correction manuelle</h3><button type="button" class="icon-btn" id="closeManualCorrection">×</button></div>
+      <input type="hidden" id="manualSubmissionId">
+      <label>Score /10<input id="manualScore" type="number" min="0" max="10" step="0.5" required></label>
+      <label>Commentaire<textarea id="manualComment" rows="4"></textarea></label>
+      <button class="primary" type="submit">Enregistrer correction</button>
+    </form>
+  </dialog>
+
+  <script src="/app.js"></script>
+</body>
+</html>
